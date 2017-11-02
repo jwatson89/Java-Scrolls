@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-<<<<<<< HEAD
 	<name>JavaScrolls</name>
-=======
-	<name>Java Scrolls</name>
->>>>>>> 4254695966eb911d127a4c9c344c4b0fe24f2576
 	<comment></comment>
 	<projects>
 	</projects>
@@ -18,13 +14,10 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-<<<<<<< HEAD
 	<variableList>
 		<variable>
 			<name>pics</name>
 			<value>file:/C:/Users/matt0/eclipse-workspace/JavaScrolls/resource</value>
 		</variable>
 	</variableList>
-=======
->>>>>>> 4254695966eb911d127a4c9c344c4b0fe24f2576
 </projectDescription>
