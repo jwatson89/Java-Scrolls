@@ -1,10 +1,13 @@
 package mobs;
 
 import items.*;
+
+import java.awt.Image;
 import java.util.ArrayList;
 
 public class Player extends Mob {
-		private Icon pic;
+	//this is a test comment
+		private Image pic;
 		private String name;
 		private int carryWeight;
 		private int exp;
