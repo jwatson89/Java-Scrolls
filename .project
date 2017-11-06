@@ -17,7 +17,7 @@
 	<variableList>
 		<variable>
 			<name>pics</name>
-			<value>file:/C:/Users/matt0/eclipse-workspace/JavaScrolls/resource</value>
+			<value>file:./resource</value>
 		</variable>
 	</variableList>
 </projectDescription>

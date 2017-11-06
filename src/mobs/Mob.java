@@ -1,7 +1,7 @@
 package mobs;
 
 public class Mob {
-		private Icon pic;
+		//private Icon pic;
 		private int health;
 		private int speed;
 		private int armor;

@@ -40,7 +40,10 @@ public class MainMenu extends JFrame {
 		{
 			JButton source=(JButton)e.getSource();
 			if(source.equals(play)) {
-				System.out.println("PLAY");
+				setContentPane(new PlayScreen());
+				validate();
+				getContentPane().requestFocus();
+				//System.out.println("PLAY");
 			}
 			else if (source.equals(load)) {
 				

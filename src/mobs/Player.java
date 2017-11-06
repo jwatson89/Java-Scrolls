@@ -5,9 +5,11 @@ import items.*;
 import java.awt.Image;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+
 public class Player extends Mob {
-	//this is a test comment
 		private Image pic;
+		private int x,y,dx,dy;
 		private String name;
 		private int carryWeight;
 		private int exp;
@@ -30,6 +32,9 @@ public class Player extends Mob {
 			this.stats = new ArrayList<Integer>();
 			this.carryWeight=cw;
 			this.armorEquipped=null;
+			setX(10);setY(10);
+			ImageIcon ii= new ImageIcon("C:\\Users\\matt0\\eclipse-workspace\\JavaScrolls\\resource\\dude.png");
+				pic = ii.getImage();
 		}
 		public String getName() {
 			return name;
@@ -79,6 +84,36 @@ public class Player extends Mob {
 		public void increaseStat(int x) {
 			stats.set(x, stats.get(x)+1);
 		}
-		
+		public int getDX() {
+			return dx;
+		}
+		public void setDX(int x) {
+			this.dx = x;
+		}
+		public int getDY() {
+			return dy;
+		}
+		public void setDY(int y) {
+			this.dy = y;
+		}
+		public int getX() {
+			return x;
+		}
+		public void setX(int x) {
+			this.x = x;
+		}
+		public int getY() {
+			return y;
+		}
+		public void setY(int y) {
+			this.y = y;
+		}
+		public Image getImage() {
+			return pic;
+		}
+		public void move() {
+			x+=dx;
+			y+=dy;
+		}
 		
 }
