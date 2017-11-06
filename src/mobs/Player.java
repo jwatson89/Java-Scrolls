@@ -33,7 +33,7 @@ public class Player extends Mob {
 			this.carryWeight=cw;
 			this.armorEquipped=null;
 			setX(10);setY(10);
-			ImageIcon ii= new ImageIcon("C:\\Users\\matt0\\eclipse-workspace\\JavaScrolls\\resource\\dude.png");
+			ImageIcon ii= new ImageIcon(this.getClass().getResource("/dude.png"));
 				pic = ii.getImage();
 		}
 		public String getName() {

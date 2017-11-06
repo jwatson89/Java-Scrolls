@@ -12,7 +12,8 @@ public class MainMenu extends JFrame {
 	private OptionsMenu opt;
 	public MainMenu() {
 		opt=new OptionsMenu();
-		background = new BackgroundPanel(new ImageIcon("C:\\Users\\matt0\\eclipse-workspace\\JavaScrolls\\resource\\flower.JPG").getImage());
+		ImageIcon ii =new ImageIcon(this.getClass().getResource("/dude.jpg"));
+		background = new BackgroundPanel(ii.getImage());
 		background.setLayout(new FlowLayout(FlowLayout.LEFT));
 		setContentPane(background);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
