@@ -28,8 +28,9 @@ public class PlayScreen extends JPanel implements ActionListener {
 	        setBackground(Color.WHITE);
 
 	        p1 = new Player();
+	        p1.scale(150,100);
 	        p1.setSpeed(3);
-	        t1 = new Timer(10, this);
+	        t1 = new Timer(20, this);
 	        t1.start();
 	        setVisible(true);
 		}
@@ -53,6 +54,7 @@ public class PlayScreen extends JPanel implements ActionListener {
 		   @Override
 		    public void actionPerformed(ActionEvent e) {
 		        p1.move();
+		        p1.boundsCheck(getWidth(),getHeight());
 		        repaint();  
 		    }
 
@@ -83,6 +85,7 @@ public class PlayScreen extends JPanel implements ActionListener {
 		                p1.setDY(1);
 		                //p1.setY(p1.getY()+20);
 		            }
+		            
 		        }
 		        @Override
 		        public void keyReleased(KeyEvent e) {
