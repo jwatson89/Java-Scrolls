@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry excluding="gui/Main.java|gui/Main22.java" kind="src" path="src"/>
-	<classpathentry excluding="ppl/IMC/attack/_shadows/|ppl/IMC/block/|ppl/IMC/block/_shadows/|ppl/IMC/death/|ppl/IMC/death/_shadows/|ppl/IMC/idle/_shadow/|ppl/IMC/jump/|ppl/IMC/jump/_shadows/|ppl/IMC/run/|ppl/IMC/run/_shadows/|ppl/IMC/walk/_shadows/|ppl/IMC/attack/" kind="src" path="resources"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
