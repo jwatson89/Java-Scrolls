@@ -10,8 +10,8 @@ import javax.swing.ImageIcon;
 public class Player extends Mob {
 		private Image pic;
 		private Image stand;
-		private Image[] walks;
-		private int x,y,dx,dy,dir,n;
+		private Image[][] walks;
+		private int x,y,dx,dy,n,width,height;
 		private String name;
 		private int carryWeight;
 		private int exp;
@@ -26,7 +26,7 @@ public class Player extends Mob {
 		public Player(int health, int speed, int armor, int locx, int locy, int attack, String name, int exp,
 				 int gold,int cw) {
 			super(health, speed, armor, locx, locy, attack);
-			walks=new Image[15];
+			walks=new Image[4][15];
 			this.name = name;
 			this.exp = exp;
 			this.inventory = new ArrayList<Item>();
@@ -42,12 +42,24 @@ public class Player extends Mob {
 				pic=stand;
 		}
 		public void initwalk() {
-			for(int i=0;i<10;i++) {
-				walks[i]=(new ImageIcon(this.getClass().getResource("/ppl/IMC/walk/crusader_walk_2000"+i+".png"))).getImage();
+			for(int j=0;j<4;j++) {
+				for(int i=0;i<10;i++) {
+					walks[j][i]=(new ImageIcon(this.getClass().getResource("/ppl/IMC/walk/crusader_walk_"+j*2+"000"+i+".png"))).getImage();
+				}
+				for(int i=10;i<15;i++) {
+					walks[j][i]=(new ImageIcon(this.getClass().getResource("/ppl/IMC/walk/crusader_walk_"+j*2+"00"+i+".png"))).getImage();
+				}
 			}
-			for(int i=10;i<15;i++) {
-				walks[i]=(new ImageIcon(this.getClass().getResource("/ppl/IMC/walk/crusader_walk_200"+i+".png"))).getImage();
+		}
+		public void scale(int width, int height) {
+			this.width=width;
+			this.height=height;
+			for(int i=0;i<4;i++) {
+				for(int j=0;j<15;j++) {
+					walks[i][j]=walks[i][j].getScaledInstance(width, height, 1);
+				}
 			}
+			stand=stand.getScaledInstance(width, height, 1);
 		}
 		public String getName() {
 			return name;
@@ -124,26 +136,54 @@ public class Player extends Mob {
 		public Image getImage() {
 			return pic;
 		}
+		public void moveTile(int tileSize,int dir) {
+			
+		}
 		public void move() {
 			if(n==15) {
 				n=0;
 			}
 			if(dx==-1) {
-				
+				pic=walks[3][n];
+				n++;
 			}
 			else if(dx==1) {
-				
+				pic=walks[1][n];
+				n++;
 			}
 			else if(dy==-1) {
-				pic=walks[n];
+				pic=walks[2][n];
+				n++;
+			}
+			else if(dy==1) {
+				pic=walks[0][n];
 				n++;
 			}
 			else {
 				pic=stand;
 				n=0;
 			}
-			x+=(getSpeed()*dx);
-			y+=(getSpeed()*dy);
+			if(dx!=0) {
+				x+=(getSpeed()*dx);
+			}
+			else {
+				y+=(getSpeed()*dy);
+			}
+		}
+		public void boundsCheck(int width2, int height2) {
+			if(x<0) {
+				x=0;
+			}
+			else if(x>width2-width) {
+				x=width2-width;
+			}
+			if(y>height2-height) {
+				y=height2-height;
+			}
+			else if(y<0) {
+				y=0;
+			}
+			
 		}
 		
 }
