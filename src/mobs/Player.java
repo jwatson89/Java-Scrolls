@@ -9,7 +9,9 @@ import javax.swing.ImageIcon;
 
 public class Player extends Mob {
 		private Image pic;
-		private int x,y,dx,dy;
+		private Image stand;
+		private Image[] walks;
+		private int x,y,dx,dy,dir,n;
 		private String name;
 		private int carryWeight;
 		private int exp;
@@ -24,6 +26,7 @@ public class Player extends Mob {
 		public Player(int health, int speed, int armor, int locx, int locy, int attack, String name, int exp,
 				 int gold,int cw) {
 			super(health, speed, armor, locx, locy, attack);
+			walks=new Image[15];
 			this.name = name;
 			this.exp = exp;
 			this.inventory = new ArrayList<Item>();
@@ -33,8 +36,18 @@ public class Player extends Mob {
 			this.carryWeight=cw;
 			this.armorEquipped=null;
 			setX(10);setY(10);
-			ImageIcon ii= new ImageIcon(this.getClass().getResource("/dude.png"));
-				pic = ii.getImage();
+			ImageIcon ii= new ImageIcon(this.getClass().getResource("/ppl/IMC/idle/crusader_idle_00000.png"));
+				stand = ii.getImage();
+				initwalk();
+				pic=stand;
+		}
+		public void initwalk() {
+			for(int i=0;i<10;i++) {
+				walks[i]=(new ImageIcon(this.getClass().getResource("/ppl/IMC/walk/crusader_walk_2000"+i+".png"))).getImage();
+			}
+			for(int i=10;i<15;i++) {
+				walks[i]=(new ImageIcon(this.getClass().getResource("/ppl/IMC/walk/crusader_walk_200"+i+".png"))).getImage();
+			}
 		}
 		public String getName() {
 			return name;
@@ -112,8 +125,25 @@ public class Player extends Mob {
 			return pic;
 		}
 		public void move() {
-			x+=dx;
-			y+=dy;
+			if(n==15) {
+				n=0;
+			}
+			if(dx==-1) {
+				
+			}
+			else if(dx==1) {
+				
+			}
+			else if(dy==-1) {
+				pic=walks[n];
+				n++;
+			}
+			else {
+				pic=stand;
+				n=0;
+			}
+			x+=(getSpeed()*dx);
+			y+=(getSpeed()*dy);
 		}
 		
 }
