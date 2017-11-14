@@ -3,15 +3,22 @@ package mobs;
 import items.*;
 
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
+import javax.swing.Timer;
+
+import gui.PlayScreen;
 
 public class Player extends Mob {
+		private PlayScreen ps;
+		private Timer t1;
 		private Image pic;
 		private Image stand;
 		private Image[][] walks;
-		private int x,y,dx,dy,n,width,height;
+		private int x,y,dx,dy,n,width,height,dir=0;
 		private String name;
 		private int carryWeight;
 		private int exp;
@@ -20,6 +27,10 @@ public class Player extends Mob {
 		private int gold;
 		private ArrayList<Integer> skills;
 		private ArrayList<Integer> stats;
+		public Player(PlayScreen ps) {
+			this();
+			this.ps=ps;
+		}
 		public Player() {
 			this(0,0,0,0,0,0,"",0,0,0);
 		}
@@ -37,9 +48,10 @@ public class Player extends Mob {
 			this.armorEquipped=null;
 			setX(10);setY(10);
 			ImageIcon ii= new ImageIcon(this.getClass().getResource("/ppl/IMC/idle/crusader_idle_00000.png"));
-				stand = ii.getImage();
-				initwalk();
-				pic=stand;
+			stand = ii.getImage();
+			initwalk();
+			pic=stand;
+			t1=new Timer(20, new PlayerMover());
 		}
 		public void initwalk() {
 			for(int j=0;j<4;j++) {
@@ -60,6 +72,7 @@ public class Player extends Mob {
 				}
 			}
 			stand=stand.getScaledInstance(width, height, 1);
+			pic=pic.getScaledInstance(width, height, 1);
 		}
 		public ArrayList<Item> getInventory() {
 			return this.inventory;
@@ -112,6 +125,9 @@ public class Player extends Mob {
 		public void increaseStat(int x) {
 			stats.set(x, stats.get(x)+1);
 		}
+		public void setN(int n) {
+			this.n=n;
+		}
 		public int getDX() {
 			return dx;
 		}
@@ -140,12 +156,45 @@ public class Player extends Mob {
 			return pic;
 		}
 		public void moveTile(int tileSize,int dir) {
+			if(n==0) {
+				t1.start();
+				this.dir=dir;
+			}			
+		}
+		private class PlayerMover implements ActionListener{
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(n==13) {
+					t1.stop();
+					n=15;
+					setDX(0);
+					setDY(0);
+				}
+				else if(dir==0) {
+					setDX(-1);
+					move();
+				}
+				else if(dir ==1) {
+					setDX(1);
+					move();
+				}
+				else if(dir ==2) {
+					setDY(-1);
+					move();					
+				}
+				else if(dir ==3) {
+					setDY(1);
+					move();					
+				}
+				ps.repaint(x-(getSpeed()*dx), y-(getSpeed()*dy), width+(getSpeed()*dx), height+(getSpeed()*dy));
+			}
 			
 		}
 		public void move() {
-			if(n==15) {
-				n=0;
-			}
+//			if(n==15) {
+//				n=0;
+//			}
 			if(dx==-1) {
 				pic=walks[3][n];
 				n++;
@@ -167,10 +216,10 @@ public class Player extends Mob {
 				n=0;
 			}
 			if(dx!=0) {
-				x+=(getSpeed()*dx);
+				x+=(getSpeed()*dx)+1;
 			}
 			else {
-				y+=(getSpeed()*dy);
+				y+=(getSpeed()*dy)+1;
 			}
 		}
 		public void boundsCheck(int width2, int height2) {

@@ -9,7 +9,7 @@ import maps.*;
 public class Mob {
 		//private Icon pic;
 		private int health;
-		private double speed;
+		private int speed;
 		private int armor;
 		private int locx;
 		private int locy;
@@ -18,7 +18,7 @@ public class Mob {
 		private Image mobImage;
 		
 		
-		public Mob(int health, double speed, int armor, int locx, int locy, int attack) {
+		public Mob(int health, int speed, int armor, int locx, int locy, int attack) {
 			this.health = health;
 			this.speed = speed;
 			this.armor = armor;
@@ -36,10 +36,10 @@ public class Mob {
 		public void setHealth(int health) {
 			this.health = health;
 		}
-		public double getSpeed() {
+		public int getSpeed() {
 			return speed;
 		}
-		public void setSpeed(double speed) {
+		public void setSpeed(int speed) {
 			this.speed = speed;
 		}
 		public int getArmor() {

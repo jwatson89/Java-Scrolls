@@ -6,11 +6,13 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import items.*;
+import maps.Map;
 import mobs.*;
 
 public class PlayScreen extends JPanel implements ActionListener {
 		private Player p1;
 		private Timer t1;
+		private Map m1;
 		JPanel inventory = new JPanel(); //new
 		JLabel[] inventoryPics = new JLabel[10]; //new
 		
@@ -22,7 +24,7 @@ public class PlayScreen extends JPanel implements ActionListener {
 			addKeyListener(new TAdapter());
 	        setFocusable(true);
 	        setBackground(Color.WHITE);
-	        p1 = new Player();
+	        p1 = new Player(this);
 	        // from danny
 	        Weapon smallHammer = new Weapon();
 			ImageIcon smallHammerPic =new ImageIcon(this.getClass().getResource("/weapons/smallHammer.png"));
@@ -54,18 +56,20 @@ public class PlayScreen extends JPanel implements ActionListener {
 	        inventory.setBackground(Color.DARK_GRAY);
 			this.add(inventory, BorderLayout.SOUTH);											
 		//*END new//
-	        p1.scale(150,100);
+	        p1.scale(50,50);
 	        p1.setSpeed(3);
-	        t1 = new Timer(20, this);
-	        t1.start();
+//	        t1 = new Timer(20, this);
+//	        t1.start();
 	        setVisible(true);
+	        
+	        m1=new Map();
 		}
 		
 
 	    @Override
 	    public void paintComponent(Graphics g) {
 	        super.paintComponent(g);
-
+	        m1.draw(g, this);
 	        doDrawing(g);
 
 	        Toolkit.getDefaultToolkit().sync();
@@ -79,60 +83,47 @@ public class PlayScreen extends JPanel implements ActionListener {
 
 		   @Override
 		    public void actionPerformed(ActionEvent e) {
-		        p1.move();
-		        p1.boundsCheck(getWidth(),getHeight());
-		        repaint();  
+//		        p1.move();
+//		        p1.boundsCheck(getWidth(),getHeight());
+//		        repaint();  
 		    }
 
 		    private class TAdapter extends KeyAdapter {
-
+		    	
 		        @Override
 
 		        public void keyPressed(KeyEvent e) {
-
+		       
 		            int key = e.getKeyCode();
 
 		            if (key == KeyEvent.VK_LEFT) {
-		                p1.setDX(-1);
+		            	p1.moveTile(m1.getTileSize(),0);
+//		                p1.setDX(-1);
 		                //p1.setX(p1.getX()-20);
 		            }
 
 		            if (key == KeyEvent.VK_RIGHT) {
-		                p1.setDX(1);
+		            	p1.moveTile(m1.getTileSize(),1);
+//		                p1.setDX(1);
 		                //p1.setX(p1.getX()+20);
 		            }
 
 		            if (key == KeyEvent.VK_UP) {
-		                p1.setDY(-1);
+		            	p1.moveTile(m1.getTileSize(),2);
+//		                p1.setDY(-1);
 		                //p1.setY(p1.getY()-20);
 		            }
 
 		            if (key == KeyEvent.VK_DOWN) {
-		                p1.setDY(1);
+		            	p1.moveTile(m1.getTileSize(),3);
+//		                p1.setDY(1);
 		                //p1.setY(p1.getY()+20);
 		            }
 		            
 		        }
 		        @Override
 		        public void keyReleased(KeyEvent e) {
-		            
-		            int key = e.getKeyCode();
-
-		            if (key == KeyEvent.VK_LEFT) {
-		            	p1.setDX(0);
-		            }
-
-		            if (key == KeyEvent.VK_RIGHT) {
-		            	p1.setDX(0);
-		            }
-
-		            if (key == KeyEvent.VK_UP) {
-		            	p1.setDY(0);
-		            }
-
-		            if (key == KeyEvent.VK_DOWN) {
-		            	p1.setDY(0);
-		            }
+		            p1.setN(0);
 		    }
 		    }
 }
