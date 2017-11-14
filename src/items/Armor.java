@@ -11,4 +11,10 @@ public class Armor extends Item {
 			super("",0,0);
 			this.armor=0;
 		}
+		public int getArmor() {
+			return armor;
+		}
+		public void setArmor(int armor) {
+			this.armor = armor;
+		}
 }
