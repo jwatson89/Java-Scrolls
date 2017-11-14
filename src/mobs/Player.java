@@ -61,6 +61,9 @@ public class Player extends Mob {
 			}
 			stand=stand.getScaledInstance(width, height, 1);
 		}
+		public ArrayList<Item> getInventory() {
+			return this.inventory;
+		}
 		public String getName() {
 			return name;
 		}

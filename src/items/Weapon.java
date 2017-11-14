@@ -11,4 +11,11 @@ public class Weapon extends Item {
 			super("",0,0);
 			this.attack=0;
 		}
+		public int getAttack() {
+			return attack;
+		}
+		public void setAttack(int attack) {
+			this.attack = attack;
+		}
+		
 }
