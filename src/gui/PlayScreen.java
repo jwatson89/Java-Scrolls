@@ -56,20 +56,20 @@ public class PlayScreen extends JPanel implements ActionListener {
 	        inventory.setBackground(Color.DARK_GRAY);
 			this.add(inventory, BorderLayout.SOUTH);											
 		//*END new//
-	        p1.scale(50,50);
+	        m1=new Map();
+	        p1.scale(m1.getTileSize(),m1.getTileSize());
 	        p1.setSpeed(3);
 //	        t1 = new Timer(20, this);
 //	        t1.start();
 	        setVisible(true);
 	        
-	        m1=new Map();
 		}
 		
 
 	    @Override
 	    public void paintComponent(Graphics g) {
 	        super.paintComponent(g);
-	        m1.draw(g, this);
+	        //m1.draw(g, this);
 	        doDrawing(g);
 
 	        Toolkit.getDefaultToolkit().sync();

@@ -12,7 +12,7 @@ public class MainMenu extends JFrame {
 	private OptionsMenu opt;
 	public MainMenu() {
 		opt=new OptionsMenu();
-		ImageIcon ii =new ImageIcon(this.getClass().getResource("/dude.jpg"));
+		ImageIcon ii =new ImageIcon(this.getClass().getResource("../dude.jpg"));
 		background = new BackgroundPanel(ii.getImage());
 		background.setLayout(new FlowLayout(FlowLayout.LEFT));
 		setContentPane(background);
@@ -32,12 +32,12 @@ public class MainMenu extends JFrame {
      	options=new JButton("Options");
      	options.addActionListener(listener);
      	background.add(options);
-     	setSize(1280,720);
+     	setSize(1920,1080);
 		setVisible(true);
 	}
 	private class ButtonListener implements ActionListener
 	{
-		public void actionPerformed(ActionEvent e) //this is the method MenuListener must implement, as it comes from the ActionListener interface.
+		public void actionPerformed(ActionEvent e) 
 		{
 			JButton source=(JButton)e.getSource();
 			if(source.equals(play)) {

@@ -5,8 +5,13 @@ import items.*;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
@@ -15,9 +20,9 @@ import gui.PlayScreen;
 public class Player extends Mob {
 		private PlayScreen ps;
 		private Timer t1;
-		private Image pic;
-		private Image stand;
-		private Image[][] walks;
+		private BufferedImage pic;
+		private BufferedImage stand;
+		private BufferedImage[][] walks;
 		private int x,y,dx,dy,n,width,height,dir=0;
 		private String name;
 		private int carryWeight;
@@ -37,7 +42,7 @@ public class Player extends Mob {
 		public Player(int health, int speed, int armor, int locx, int locy, int attack, String name, int exp,
 				 int gold,int cw) {
 			super(health, speed, armor, locx, locy, attack);
-			walks=new Image[4][15];
+			walks=new BufferedImage[4][15];
 			this.name = name;
 			this.exp = exp;
 			this.inventory = new ArrayList<Item>();
@@ -47,20 +52,36 @@ public class Player extends Mob {
 			this.carryWeight=cw;
 			this.armorEquipped=null;
 			setX(10);setY(10);
-			ImageIcon ii= new ImageIcon(this.getClass().getResource("/ppl/IMC/idle/crusader_idle_00000.png"));
-			stand = ii.getImage();
-			initwalk();
-			pic=stand;
-			t1=new Timer(20, new PlayerMover());
+			//ImageIcon ii= new ImageIcon(this.getClass().getResource("/ppl/IMC/idle/crusader_idle_00000.png"));
+			try {
+				stand = ImageIO.read(this.getClass().getResourceAsStream("/ppl/IMC/idle/crusader_idle_00000.png"));
+			//ii.getImage();
+				initwalk();
+				pic=stand;
+				t1=new Timer(20, new PlayerMover());
+				ImageIO.write(pic, "png", new File("/pic1.png"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.out.println("HELP1");
+				e.printStackTrace();
+			}
 		}
 		public void initwalk() {
+			try {
 			for(int j=0;j<4;j++) {
 				for(int i=0;i<10;i++) {
-					walks[j][i]=(new ImageIcon(this.getClass().getResource("/ppl/IMC/walk/crusader_walk_"+j*2+"000"+i+".png"))).getImage();
+					walks[j][i]=ImageIO.read(this.getClass().getResourceAsStream("../ppl/IMC/walk/crusader_walk_\"+j*2+\"000\"+i+\".png"));//(new ImageIcon(this.getClass().getResource("/ppl/IMC/walk/crusader_walk_"+j*2+"000"+i+".png"))).getImage();
 				}
 				for(int i=10;i<15;i++) {
-					walks[j][i]=(new ImageIcon(this.getClass().getResource("/ppl/IMC/walk/crusader_walk_"+j*2+"00"+i+".png"))).getImage();
+					
+						walks[j][i]=ImageIO.read(this.getClass().getResourceAsStream("../ppl/IMC/walk/crusader_walk_"+j*2+"00"+i+".png"));
+					//(new ImageIcon(this.getClass().getResource("/ppl/IMC/walk/crusader_walk_"+j*2+"00"+i+".png"))).getImage();
 				}
+			}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				System.out.println("HELP");
+				e.printStackTrace();
 			}
 		}
 		public void scale(int width, int height) {
@@ -68,11 +89,11 @@ public class Player extends Mob {
 			this.height=height;
 			for(int i=0;i<4;i++) {
 				for(int j=0;j<15;j++) {
-					walks[i][j]=walks[i][j].getScaledInstance(width, height, 1);
+					walks[i][j]=(BufferedImage) walks[i][j].getScaledInstance(width, height, 1);
 				}
 			}
-			stand=stand.getScaledInstance(width, height, 1);
-			pic=pic.getScaledInstance(width, height, 1);
+			stand=(BufferedImage) stand.getScaledInstance(width, height, 1);
+			pic=(BufferedImage) pic.getScaledInstance(width, height, 1);
 		}
 		public ArrayList<Item> getInventory() {
 			return this.inventory;
@@ -165,7 +186,7 @@ public class Player extends Mob {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(n==13) {
+				if(n==15) {
 					t1.stop();
 					n=15;
 					setDX(0);
