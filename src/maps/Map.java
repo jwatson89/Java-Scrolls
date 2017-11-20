@@ -27,8 +27,8 @@ public class Map {
 			for(int i=0; i<tilesH;i++) {
 				for(int j=0;j<tilesW;j++) {
 					grid[i][j]=new Tile();
-					grid[i][j].setHeight(50);
-					grid[i][j].setWidth(50);
+					grid[i][j].setHeight(32);
+					grid[i][j].setWidth(32);
 				}
 			}
 		}

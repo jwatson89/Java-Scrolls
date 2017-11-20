@@ -69,7 +69,7 @@ public class PlayScreen extends JPanel implements ActionListener {
 	    @Override
 	    public void paintComponent(Graphics g) {
 	        super.paintComponent(g);
-	        //m1.draw(g, this);
+	        m1.draw(g, this);
 	        doDrawing(g);
 
 	        Toolkit.getDefaultToolkit().sync();
@@ -77,7 +77,8 @@ public class PlayScreen extends JPanel implements ActionListener {
 		
 		private void doDrawing(Graphics g) {
 			Graphics2D g2d = (Graphics2D) g;
-		    g2d.drawImage(p1.getImage(), p1.getX(), p1.getY(), this);        
+		    g2d.drawImage(p1.getImage(),null, p1.getX(), p1.getY());  
+		    
 			
 		}
 

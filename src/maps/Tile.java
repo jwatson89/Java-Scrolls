@@ -20,7 +20,7 @@ public class Tile {
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.drawRect(x*width, y*height, width, height);
 		if(mob!=null) {
-			g2d.drawImage(mob.getImage(), x, y, ps);
+			g2d.drawImage(mob.getImage(), x*width, y*height, ps);
 		}
 	}
 	
