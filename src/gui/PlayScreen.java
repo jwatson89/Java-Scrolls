@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import items.*;
+import maps.Grasslands;
 import maps.Map;
 import mobs.*;
 
@@ -52,12 +53,12 @@ public class PlayScreen extends JPanel implements ActionListener {
 	        }
 	        
 	        setLayout(new BorderLayout());
-	        inventory.setPreferredSize(new Dimension(400, 100));
+	        inventory.setPreferredSize(new Dimension(400, 120));
 	        inventory.setBackground(Color.DARK_GRAY);
 			this.add(inventory, BorderLayout.SOUTH);											
 		//*END new//
-	        m1=new Map();
-	        p1.scale(m1.getTileSize(),m1.getTileSize());
+	        m1=new Grasslands(5);
+	        //p1.scale(m1.getTileSize(),m1.getTileSize());
 	        p1.setSpeed(3);
 //	        t1 = new Timer(20, this);
 //	        t1.start();
@@ -94,37 +95,39 @@ public class PlayScreen extends JPanel implements ActionListener {
 		        @Override
 
 		        public void keyPressed(KeyEvent e) {
-		       
-		            int key = e.getKeyCode();
-
-		            if (key == KeyEvent.VK_LEFT) {
-		            	p1.moveTile(m1.getTileSize(),0);
-//		                p1.setDX(-1);
-		                //p1.setX(p1.getX()-20);
-		            }
-
-		            if (key == KeyEvent.VK_RIGHT) {
-		            	p1.moveTile(m1.getTileSize(),1);
-//		                p1.setDX(1);
-		                //p1.setX(p1.getX()+20);
-		            }
-
-		            if (key == KeyEvent.VK_UP) {
-		            	p1.moveTile(m1.getTileSize(),2);
-//		                p1.setDY(-1);
-		                //p1.setY(p1.getY()-20);
-		            }
-
-		            if (key == KeyEvent.VK_DOWN) {
-		            	p1.moveTile(m1.getTileSize(),3);
-//		                p1.setDY(1);
-		                //p1.setY(p1.getY()+20);
-		            }
-		            
+		        	if(!p1.moving) {
+		        		p1.setN(0);		
+		        	}
 		        }
 		        @Override
 		        public void keyReleased(KeyEvent e) {
-		            p1.setN(0);
-		    }
+
+		            int key = e.getKeyCode();
+		            if(!p1.moving) {
+			            if (key == KeyEvent.VK_LEFT) {
+			            	p1.moveTile(m1.getTileSize(),0);
+	//		                p1.setDX(-1);
+			                //p1.setX(p1.getX()-20);
+			            }
+	
+			            if (key == KeyEvent.VK_RIGHT) {
+			            	p1.moveTile(m1.getTileSize(),1);
+	//		                p1.setDX(1);
+			                //p1.setX(p1.getX()+20);
+			            }
+	
+			            if (key == KeyEvent.VK_UP) {
+			            	p1.moveTile(m1.getTileSize(),2);
+	//		                p1.setDY(-1);
+			                //p1.setY(p1.getY()-20);
+			            }
+	
+			            if (key == KeyEvent.VK_DOWN) {
+			            	p1.moveTile(m1.getTileSize(),3);
+	//		                p1.setDY(1);
+			                //p1.setY(p1.getY()+20);
+			            }
+			        }
+		        }
 		    }
 }

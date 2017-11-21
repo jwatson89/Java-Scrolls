@@ -12,7 +12,7 @@ public class MainMenu extends JFrame {
 	private OptionsMenu opt;
 	public MainMenu() {
 		opt=new OptionsMenu();
-		ImageIcon ii =new ImageIcon(this.getClass().getResource("../dude.jpg"));
+		ImageIcon ii =new ImageIcon(this.getClass().getResource("../Skyrimmap.png"));
 		background = new BackgroundPanel(ii.getImage());
 		background.setLayout(new FlowLayout(FlowLayout.LEFT));
 		setContentPane(background);

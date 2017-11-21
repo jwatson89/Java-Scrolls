@@ -2,6 +2,8 @@ package mobs;
 
 import items.*;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,6 +34,7 @@ public class Player extends Mob {
 		private int gold;
 		private ArrayList<Integer> skills;
 		private ArrayList<Integer> stats;
+		public boolean moving;
 		public Player(PlayScreen ps) {
 			this();
 			this.ps=ps;
@@ -51,7 +54,7 @@ public class Player extends Mob {
 			this.stats = new ArrayList<Integer>();
 			this.carryWeight=cw;
 			this.armorEquipped=null;
-			setX(10);setY(10);
+			setX(0);setY(0);
 			//ImageIcon ii= new ImageIcon(this.getClass().getResource("/ppl/IMC/idle/crusader_idle_00000.png"));
 			try {
 				stand = ImageIO.read(this.getClass().getResourceAsStream("/ppl/IMC/idle/crusader_idle_00000.png"));
@@ -65,18 +68,25 @@ public class Player extends Mob {
 				System.out.println("HELP1");
 				e.printStackTrace();
 			}
+			
 		}
-		public void initwalk() {
+		public void initwalk() { //commented line were used for one time scaling
 			try {
 			for(int j=0;j<4;j++) {
 				for(int i=0;i<10;i++) {
 					walks[j][i]=ImageIO.read(this.getClass().getResourceAsStream("../ppl/IMC/walk/crusader_walk_"+j*2+"000"+i+".png"));//(new ImageIcon(this.getClass().getResource("/ppl/IMC/walk/crusader_walk_"+j*2+"000"+i+".png"))).getImage();
-					//ImageIO.write(walks[j][i].getSubimage(65, 20, 170, 170), "png", new File("./resources/ppl/IMC/walk/crusader_walk_"+j*2+"000"+i+".png"));
+//					BufferedImage temp = new BufferedImage(32, 32, BufferedImage.TYPE_4BYTE_ABGR_PRE);
+//					Graphics2D g =temp.createGraphics();
+//					g.drawImage(walks[j][i], 0, 0, 32, 32, null);
+//					ImageIO.write(temp, "png", new File("./resources/ppl/IMC/walk/crusader_walk_"+j*2+"000"+i+".png"));
 				}
 				for(int i=10;i<15;i++) {
 					
 						walks[j][i]=ImageIO.read(this.getClass().getResourceAsStream("../ppl/IMC/walk/crusader_walk_"+j*2+"00"+i+".png"));
-						//ImageIO.write(walks[j][i].getSubimage(65, 20, 170, 170), "png", new File("./resources/ppl/IMC/walk/crusader_walk_"+j*2+"00"+i+".png"));
+//						BufferedImage temp = new BufferedImage(32, 32, BufferedImage.TYPE_4BYTE_ABGR_PRE);
+//						Graphics2D g =temp.createGraphics();
+//						g.drawImage(walks[j][i], 0, 0, 32, 32, null);
+//						ImageIO.write(temp, "png", new File("./resources/ppl/IMC/walk/crusader_walk_"+j*2+"00"+i+".png"));
 					//(new ImageIcon(this.getClass().getResource("/ppl/IMC/walk/crusader_walk_"+j*2+"00"+i+".png"))).getImage();
 				}
 			}
@@ -181,6 +191,7 @@ public class Player extends Mob {
 		public void moveTile(int tileSize,int dir) {
 			if(n==0) {
 				t1.start();
+				moving=true;
 				this.dir=dir;
 			}			
 		}
@@ -191,8 +202,10 @@ public class Player extends Mob {
 				if(n==15) {
 					t1.stop();
 					//n=15;
+					move();
 					setDX(0);
 					setDY(0);
+					moving=false;
 				}
 				else if(dir==0) {
 					setDX(-1);
@@ -210,14 +223,15 @@ public class Player extends Mob {
 					setDY(1);
 					move();					
 				}
+				boundsCheck(ps.getWidth(),ps.getHeight());
 				ps.repaint();//x-(getSpeed()*dx), y-(getSpeed()*dy), width+(getSpeed()*dx), height+(getSpeed()*dy));
 			}
 			
 		}
 		public void move() {
-//			if(n==15) {
-//				n=0;
-//			}
+			if(n==15) {
+				n=14;
+			}
 			if(dx==-1) {
 				pic=walks[3][n];
 				n++;
@@ -239,10 +253,10 @@ public class Player extends Mob {
 				n=0;
 			}
 			if(dx!=0) {
-				x+=(getSpeed()*dx)+1;
+				x+=(2*dx);
 			}
 			else {
-				y+=(getSpeed()*dy)+1;
+				y+=(2*dy);
 			}
 		}
 		public void boundsCheck(int width2, int height2) {

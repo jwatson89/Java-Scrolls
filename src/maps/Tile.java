@@ -18,7 +18,7 @@ public class Tile {
 	}
 	public void draw(Graphics g,int x, int y,PlayScreen ps) {
 		Graphics2D g2d = (Graphics2D)g;
-		g2d.drawRect(x*width, y*height, width, height);
+		//g2d.drawRect(x*width, y*height, width, height);
 		if(mob!=null) {
 			g2d.drawImage(mob.getImage(), x*width, y*height, ps);
 		}
