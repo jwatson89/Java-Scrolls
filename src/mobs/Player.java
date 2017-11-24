@@ -1,6 +1,7 @@
 package mobs;
 
 import items.*;
+import maps.Map;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -40,7 +41,7 @@ public class Player extends Mob {
 			this.ps=ps;
 		}
 		public Player() {
-			this(0,0,0,0,0,0,"",0,0,0);
+			this(25,0,1,0,0,5,"me",0,0,0);
 		}
 		public Player(int health, int speed, int armor, int locx, int locy, int attack, String name, int exp,
 				 int gold,int cw) {
@@ -188,11 +189,41 @@ public class Player extends Mob {
 		public BufferedImage getImage() {
 			return pic;
 		}
-		public void moveTile(int tileSize,int dir) {
+		public void moveTile(int tileSize,int dir, Map m1) {
+			boolean valid=false;
 			if(n==0) {
-				t1.start();
-				moving=true;
-				this.dir=dir;
+				if(x==0 && dir == 0) {
+					
+				}
+				else if(y==0 && dir == 2) {
+					
+				}
+				else if(x/32==59 && dir == 1) {
+					
+				}
+				else if(y/32 ==29 && dir == 3) {
+					
+				}else {
+					switch (dir) {
+						case 0:
+							valid = m1.getTile(x/32 - 1, y/32).getMob()==null;
+							break;
+						case 1:
+							valid = m1.getTile(x/32 + 1, y/32).getMob()==null;
+							break;
+						case 2:
+							valid = m1.getTile(x/32, y/32 - 1).getMob()==null;
+							break;
+						case 3:
+							valid = m1.getTile(x/32, y/32 + 1).getMob()==null;
+							break;					
+					}
+					if(valid) {
+						t1.start();
+						moving=true;
+					}
+					this.direction=dir;
+				}
 			}			
 		}
 		private class PlayerMover implements ActionListener{
@@ -206,20 +237,22 @@ public class Player extends Mob {
 					setDX(0);
 					setDY(0);
 					moving=false;
+					setLocx(x/32);
+					setLocy(y/32);
 				}
-				else if(dir==0) {
+				else if(direction==0) {
 					setDX(-1);
 					move();
 				}
-				else if(dir ==1) {
+				else if(direction ==1) {
 					setDX(1);
 					move();
 				}
-				else if(dir ==2) {
+				else if(direction ==2) {
 					setDY(-1);
 					move();					
 				}
-				else if(dir ==3) {
+				else if(direction ==3) {
 					setDY(1);
 					move();					
 				}

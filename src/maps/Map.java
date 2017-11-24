@@ -48,7 +48,7 @@ public class Map {
 				}
 			
 		}
-		public Tile getTile(int x, int y) {return this.grid[x][y];}
+		public Tile getTile(int x, int y) {return this.grid[y][x];}
 		public int getTileSize() {
 			return grid[0][0].getHeight();
 		}

@@ -23,11 +23,11 @@ public class Grasslands extends Map {
 	}
 	public void addBadGuys(int hard) {
 		for(int i=0;i<5*hard;i++) {
-			int  x = rand.nextInt(29)+1;
-			int  y = rand.nextInt(59)+1;
+			int  x = rand.nextInt(59)+1;
+			int  y = rand.nextInt(29)+1;
 			while(getTile(x,y).getMob()!=null) {
-				x = rand.nextInt(29)+1;
-				y = rand.nextInt(59)+1;
+				x = rand.nextInt(28)+1;
+				y = rand.nextInt(58)+1;
 			}
 			getTile(x, y).setMob(randomMob(hard,x,y));
 		}

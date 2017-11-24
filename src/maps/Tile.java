@@ -4,13 +4,16 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import gui.PlayScreen;
+import items.Item;
 import mobs.*;
 
 public class Tile {
 	private Mob mob;
+	private Item item;
 	private int width,height;
 	public Tile() {
 		this.mob = null;
+		this.item = null;
 	}
 	
 	public Tile(Mob m) {
@@ -41,5 +44,13 @@ public class Tile {
 
 	public void setHeight(int height) {
 		this.height = height;
+	}
+
+	public Item getItem() {
+		return item;
+	}
+
+	public void setItem(Item item) {
+		this.item = item;
 	}
 }

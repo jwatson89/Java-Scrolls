@@ -105,27 +105,32 @@ public class PlayScreen extends JPanel implements ActionListener {
 		            int key = e.getKeyCode();
 		            if(!p1.moving) {
 			            if (key == KeyEvent.VK_LEFT) {
-			            	p1.moveTile(m1.getTileSize(),0);
+			            	p1.moveTile(m1.getTileSize(),0,m1);
 	//		                p1.setDX(-1);
 			                //p1.setX(p1.getX()-20);
 			            }
 	
 			            if (key == KeyEvent.VK_RIGHT) {
-			            	p1.moveTile(m1.getTileSize(),1);
+			            	p1.moveTile(m1.getTileSize(),1,m1);
 	//		                p1.setDX(1);
 			                //p1.setX(p1.getX()+20);
 			            }
 	
 			            if (key == KeyEvent.VK_UP) {
-			            	p1.moveTile(m1.getTileSize(),2);
+			            	p1.moveTile(m1.getTileSize(),2,m1);
 	//		                p1.setDY(-1);
 			                //p1.setY(p1.getY()-20);
 			            }
 	
 			            if (key == KeyEvent.VK_DOWN) {
-			            	p1.moveTile(m1.getTileSize(),3);
+			            	p1.moveTile(m1.getTileSize(),3,m1);
 	//		                p1.setDY(1);
 			                //p1.setY(p1.getY()+20);
+			            }
+			            
+			            if(key == KeyEvent.VK_A) {
+			            	p1.attack(m1);
+			            	repaint();
 			            }
 			        }
 		        }

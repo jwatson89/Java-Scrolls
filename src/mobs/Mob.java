@@ -14,7 +14,7 @@ public class Mob {
 		private int locx;
 		private int locy;
 		private int attack;
-		private int direction;
+		protected int direction;
 		private Image mobImage;
 		
 		
@@ -75,35 +75,47 @@ public class Mob {
 			Tile attackTile = null;
 			
 			switch(this.direction) { //FIXME ADD ANIMATIONS
-				case 1:
+				case 2:
 					if (this.locy != 0) {
 						attackTile = theMap.getTile(this.locx, this.locy - 1);
 					}
 					break;
-				case 2:
-					if (this.locx != 799) {
+				case 1:
+					if (this.locx != 59) {
 						attackTile = theMap.getTile(this.locx + 1, this.locy);
 					}
 					break;
 				case 3:
-					if (this.locy != 449) {
+					if (this.locy != 29) {
 						attackTile = theMap.getTile(this.locx, this.locy + 1);
 					}
 					break;
-				case 4:
+				case 0:
 					if (this.locx != 0) {
 						attackTile = theMap.getTile(this.locx - 1, this.locy);
 					}
 					break;
 			}
-			if (attackTile != null) { //equation for damage
+			if (attackTile != null && attackTile.getMob() != null) { //equation for damage
 				Mob defender = attackTile.getMob();
 				int damage = this.attack / defender.getArmor() + 1;
 				defender.setHealth(defender.getHealth() - damage);
+				System.out.println("Defender Health: " + defender.getHealth());
+				if(defender.getHealth()>0) {
+					defender.counterAttack(this);
+				}
+				else{
+					attackTile.setMob(null);
+				}
 			}
 		}
 		
 		
+		private void counterAttack(Mob mob) {
+			int damage = this.attack / mob.getArmor() + 1;
+			mob.setHealth(mob.getHealth() - damage);			
+			System.out.println("My Health: " + mob.getHealth());
+		}
 		public void move() {
 			// Fix Me
 		}
