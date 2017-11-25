@@ -2,7 +2,6 @@ package maps;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -13,7 +12,7 @@ public class Map {
 	private static int tilesH=30, tilesW=60;
 		private BufferedImage background;
 		//private soundtrack bgMusic;
-		private ArrayList<Monster> monsters;
+		private ArrayList<Monster> monsters; // do we even need these?
 		private ArrayList<People> people;
 		private Tile[][] grid;
 		public void setBG(BufferedImage bg) {
@@ -35,6 +34,9 @@ public class Map {
 					grid[i][j].setWidth(32);
 				}
 			}
+		}
+		public BufferedImage getBG() {
+			return this.background;
 		}
 		public void draw(Graphics g,PlayScreen ps) {
 			if(background !=null) {

@@ -2,7 +2,10 @@ package gui;
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class MainMenu extends JFrame {
@@ -14,7 +17,7 @@ public class MainMenu extends JFrame {
 		opt=new OptionsMenu();
 		ImageIcon ii =new ImageIcon(this.getClass().getResource("../Skyrimmap.png"));
 		background = new BackgroundPanel(ii.getImage());
-		background.setLayout(new FlowLayout(FlowLayout.LEFT));
+		background.setLayout(new BorderLayout());
 		setContentPane(background);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		buildGUI();	
@@ -25,13 +28,29 @@ public class MainMenu extends JFrame {
 		listener = new ButtonListener();
      	play=new JButton("Play");
      	play.addActionListener(listener);
-     	background.add(play);
      	load=new JButton("Load");
      	load.addActionListener(listener);
-     	background.add(load);
      	options=new JButton("Options");
      	options.addActionListener(listener);
-     	background.add(options);
+     	options.setSize(new Dimension(50,100));
+     	play.setSize(new Dimension(50,100));
+     	load.setSize(new Dimension(50,100));
+     	JPanel tmp= new JPanel();
+     	tmp.add(play);
+     	tmp.add(load);
+     	tmp.add(options);
+     	JLabel tmp2 = new JLabel();
+     	ImageIcon txt=new ImageIcon(this.getClass().getResource("../The Java Scrolls.png"));
+		tmp2.setIcon((Icon) txt);
+		JPanel tmp3=new JPanel();
+		tmp3.setLayout(new FlowLayout(FlowLayout.CENTER));
+		tmp3.add(tmp2);
+     	background.add(tmp,BorderLayout.CENTER);
+     	background.add(new JPanel(),BorderLayout.EAST);
+     	background.add(tmp3,BorderLayout.NORTH);
+     	background.add(new JPanel(),BorderLayout.WEST);
+     	background.add(new JPanel(),BorderLayout.SOUTH);
+     	
      	setSize(1920,1080);
 		setVisible(true);
 	}

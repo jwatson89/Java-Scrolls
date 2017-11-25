@@ -74,7 +74,7 @@ public class Mob {
 		public void attack(Map theMap) {
 			Tile attackTile = null;
 			
-			switch(this.direction) { //FIXME ADD ANIMATIONS
+			switch(this.direction) { //FIXME ADD ANIMATIONS maybe...
 				case 2:
 					if (this.locy != 0) {
 						attackTile = theMap.getTile(this.locx, this.locy - 1);
@@ -100,12 +100,12 @@ public class Mob {
 				Mob defender = attackTile.getMob();
 				int damage = this.attack / defender.getArmor() + 1;
 				defender.setHealth(defender.getHealth() - damage);
-				System.out.println("Defender Health: " + defender.getHealth());
 				if(defender.getHealth()>0) {
 					defender.counterAttack(this);
 				}
 				else{
 					attackTile.setMob(null);
+					attackTile.setWalkable(true);
 				}
 			}
 		}
@@ -113,11 +113,10 @@ public class Mob {
 		
 		private void counterAttack(Mob mob) {
 			int damage = this.attack / mob.getArmor() + 1;
-			mob.setHealth(mob.getHealth() - damage);			
-			System.out.println("My Health: " + mob.getHealth());
+			mob.setHealth(mob.getHealth() - damage);
 		}
 		public void move() {
-			// Fix Me
+			// Fix Me maybe?
 		}
 		
 }

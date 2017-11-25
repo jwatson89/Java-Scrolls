@@ -3,19 +3,15 @@ package mobs;
 import items.*;
 import maps.Map;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
 import gui.PlayScreen;
@@ -26,7 +22,7 @@ public class Player extends Mob {
 		private BufferedImage pic;
 		private BufferedImage stand;
 		private BufferedImage[][] walks;
-		private int x,y,dx,dy,n,width,height,dir=0;
+		private int x,y,dx,dy,n,width,height;
 		private String name;
 		private int carryWeight;
 		private int exp;
@@ -65,7 +61,6 @@ public class Player extends Mob {
 				t1=new Timer(20, new PlayerMover());
 				//ImageIO.write(pic, "png", new File("./pic1.png"));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				System.out.println("HELP1");
 				e.printStackTrace();
 			}
@@ -92,7 +87,6 @@ public class Player extends Mob {
 				}
 			}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				System.out.println("HELP");
 				e.printStackTrace();
 			}
@@ -203,24 +197,37 @@ public class Player extends Mob {
 				}
 				else if(y/32 ==29 && dir == 3) {
 					
-				}else {
+				}
+				else {
 					switch (dir) {
 						case 0:
-							valid = m1.getTile(x/32 - 1, y/32).getMob()==null;
+							valid = m1.getTile(x/32 - 1, y/32).isWalkable();
 							break;
 						case 1:
-							valid = m1.getTile(x/32 + 1, y/32).getMob()==null;
+							valid = m1.getTile(x/32 + 1, y/32).isWalkable();
 							break;
 						case 2:
-							valid = m1.getTile(x/32, y/32 - 1).getMob()==null;
+							valid = m1.getTile(x/32, y/32 - 1).isWalkable();
 							break;
 						case 3:
-							valid = m1.getTile(x/32, y/32 + 1).getMob()==null;
+							valid = m1.getTile(x/32, y/32 + 1).isWalkable();
 							break;					
 					}
 					if(valid) {
 						t1.start();
 						moving=true;
+					}
+					else {
+						if(dir==3) {
+							pic=walks[0][0];	
+						}
+						else if(dir==0) {
+							pic=walks[3][0];	
+						}
+						else {
+							pic=walks[dir][0];	
+						}
+							ps.repaint();
 					}
 					this.direction=dir;
 				}

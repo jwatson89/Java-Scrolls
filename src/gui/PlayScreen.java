@@ -12,7 +12,6 @@ import mobs.*;
 
 public class PlayScreen extends JPanel implements ActionListener {
 		private Player p1;
-		private Timer t1;
 		private Map m1;
 		JPanel inventory = new JPanel(); //new
 		JLabel[] inventoryPics = new JLabel[10]; //new
@@ -26,7 +25,6 @@ public class PlayScreen extends JPanel implements ActionListener {
 	        setFocusable(true);
 	        setBackground(Color.WHITE);
 	        p1 = new Player(this);
-	        // from danny
 	        Weapon smallHammer = new Weapon();
 			ImageIcon smallHammerPic =new ImageIcon(this.getClass().getResource("/weapons/smallHammer.png"));
 	        smallHammer.setPic(smallHammerPic);
@@ -55,8 +53,7 @@ public class PlayScreen extends JPanel implements ActionListener {
 	        setLayout(new BorderLayout());
 	        inventory.setPreferredSize(new Dimension(400, 120));
 	        inventory.setBackground(Color.DARK_GRAY);
-			this.add(inventory, BorderLayout.SOUTH);											
-		//*END new//
+			this.add(inventory, BorderLayout.SOUTH);			
 	        m1=new Grasslands(5);
 	        //p1.scale(m1.getTileSize(),m1.getTileSize());
 	        p1.setSpeed(3);
@@ -65,7 +62,7 @@ public class PlayScreen extends JPanel implements ActionListener {
 	        setVisible(true);
 	        
 		}
-		
+		//TODO display player stats (health, armor, attack) at bottom of screen, above inventory
 
 	    @Override
 	    public void paintComponent(Graphics g) {
