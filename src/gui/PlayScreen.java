@@ -2,39 +2,49 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import javax.swing.*;
-
 import items.*;
 import maps.Grasslands;
 import maps.Map;
 import mobs.*;
 
-public class PlayScreen extends JPanel implements ActionListener {
+public class PlayScreen extends JPanel implements ActionListener, Serializable{
 		private Player p1;
 		private Map m1;
+		transient private PauseMenu pauseMenu;
 		JPanel inventory = new JPanel(); //new
 		JLabel[] inventoryPics = new JLabel[10]; //new
 		
 		public PlayScreen() {
 			init();
 		}
-		
+		public void linkPauseMenu(PauseMenu pm) {
+			this.pauseMenu=pm;
+			addKeyListener(new TAdapter());
+			p1.callAfterLoad(this);
+		}
 		public void init() {
 			addKeyListener(new TAdapter());
 	        setFocusable(true);
 	        setBackground(Color.WHITE);
 	        p1 = new Player(this);
-	        Weapon smallHammer = new Weapon();
-			ImageIcon smallHammerPic =new ImageIcon(this.getClass().getResource("/weapons/smallHammer.png"));
-	        smallHammer.setPic(smallHammerPic);
-	        p1.addInventoryItem(smallHammer);
-	        
-	        Weapon bigHammer = new Weapon();
-			ImageIcon bigHammerPic =new ImageIcon(this.getClass().getResource("/weapons/bigHammer.png"));
-	        bigHammer.setPic(bigHammerPic);
-	        p1.addInventoryItem(bigHammer);
-			
+//	        Weapon smallHammer = new Weapon();
+//			ImageIcon smallHammerPic =new ImageIcon(this.getClass().getResource("/weapons/smallHammer.png"));
+//	        smallHammer.setPic(smallHammerPic);
+//	        p1.addInventoryItem(smallHammer);
+//	        
+//	        Weapon bigHammer = new Weapon();
+//			ImageIcon bigHammerPic =new ImageIcon(this.getClass().getResource("/weapons/bigHammer.png"));
+//	        bigHammer.setPic(bigHammerPic);
+//	        p1.addInventoryItem(bigHammer);
+//			
 	        if(p1.getInventory().size() == 0) {				
 	        	inventory.setLayout(new GridLayout(1,10,2,2));
 	        	/*for(int i = 0; i < 10; i++) {
@@ -45,7 +55,7 @@ public class PlayScreen extends JPanel implements ActionListener {
 	        else {
 	        	inventory.setLayout(new GridLayout(1, 10, 2, 2/*p1.getInventory().size()*/));
 	        	for(int i = 0; i < p1.getInventory().size(); i++) {  
-	        		inventoryPics[i] = new JLabel(p1.getInventory().get(i).getPic());
+	        		//inventoryPics[i] = new JLabel(p1.getInventory().get(i).getPic());
 	        		inventory.add(inventoryPics[i]);
 		        }
 	        }
@@ -62,8 +72,12 @@ public class PlayScreen extends JPanel implements ActionListener {
 	        setVisible(true);
 	        
 		}
+
+
 		//TODO display player stats (health, armor, attack) at bottom of screen, above inventory
 
+		
+		
 	    @Override
 	    public void paintComponent(Graphics g) {
 	        super.paintComponent(g);
@@ -92,7 +106,11 @@ public class PlayScreen extends JPanel implements ActionListener {
 		        @Override
 
 		        public void keyPressed(KeyEvent e) {
-		        	if(!p1.moving) {
+		            int key = e.getKeyCode();
+		        	if(key == KeyEvent.VK_ESCAPE) {
+		        		pauseMenu.pause();
+		        	}
+		        	else if(!p1.moving) {
 		        		p1.setN(0);		
 		        	}
 		        }
@@ -132,4 +150,40 @@ public class PlayScreen extends JPanel implements ActionListener {
 			        }
 		        }
 		    }
+
+			public static void save(PlayScreen ps) { //FIXME this doesnt work
+				try {
+					FileOutputStream fout=new FileOutputStream("save1.sv");
+					ObjectOutputStream out=new ObjectOutputStream(fout);
+					out.writeObject(ps);
+//					out.writeObject(ps.p1);
+//					out.writeObject(ps.m1);
+					out.close();
+				} catch (IOException en) {
+						en.printStackTrace();	
+				}
+				
+			}
+
+			public static PlayScreen load() {
+				PlayScreen y=null;
+				try {
+					FileInputStream fin=new FileInputStream("save1.sv");
+					ObjectInputStream in=new ObjectInputStream(fin);
+					y = (PlayScreen)in.readObject();
+//					y.setPlayer((Player)in.readObject());
+//					y.setMap((Map)in.readObject());
+					in.close();
+					
+				} catch (IOException | ClassNotFoundException c) {
+							c.printStackTrace();
+				}
+				return y;
+			}
+			public void setPlayer(Player p) {
+				this.p1=p;
+			}
+			public void setMap(Map m) {
+				this.m1=m;
+			}
 }

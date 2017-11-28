@@ -3,17 +3,20 @@ package maps;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.*;
+
+import javax.imageio.ImageIO;
 
 import gui.PlayScreen;
 import items.Item;
 import mobs.*;
 
-public class Tile {
+public class Tile implements Serializable{
 	private Mob mob;
 	private Item item;
 	private int width,height;
 	private boolean walkable;
-	private BufferedImage pic;
+	transient private BufferedImage pic;
 	public Tile() {
 		this.mob = null;
 		this.item = null;
@@ -76,5 +79,28 @@ public class Tile {
 
 	public void setWalkable(boolean walkable) {
 		this.walkable = walkable;
+	}
+	private void writeObject(ObjectOutputStream out) throws IOException {
+	    out.defaultWriteObject();
+	    	
+	        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+	        if(pic!=null) {
+	        	ImageIO.write(pic, "png", buffer);
+	        }
+	        out.writeInt(buffer.size()); // Prepend image with byte count
+	        buffer.writeTo(out);         // Write image
+	    
+	}
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+	    in.defaultReadObject();
+	        int size = in.readInt(); // Read byte count
+	        if(size!=0) {
+		        byte[] buffer = new byte[size];
+		        
+		        in.readFully(buffer); // Make sure you read all bytes of the image
+	
+		        setPic(ImageIO.read(new ByteArrayInputStream(buffer)));
+	        }
 	}
 }

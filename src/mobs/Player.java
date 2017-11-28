@@ -7,21 +7,20 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
-import gui.PlayScreen;
+import gui.*;
 
 public class Player extends Mob {
-		private PlayScreen ps;
+		transient private PlayScreen ps;
 		private Timer t1;
-		private BufferedImage pic;
-		private BufferedImage stand;
-		private BufferedImage[][] walks;
+		transient private BufferedImage pic;
+		transient private BufferedImage stand;
+		transient private BufferedImage[][] walks;
 		private int x,y,dx,dy,n,width,height;
 		private String name;
 		private int carryWeight;
@@ -29,6 +28,7 @@ public class Player extends Mob {
 		private Armor armorEquipped;
 		private ArrayList<Item> inventory;
 		private int gold;
+		transient private PlayerMover playermove;
 		private ArrayList<Integer> skills;
 		private ArrayList<Integer> stats;
 		public boolean moving;
@@ -52,13 +52,14 @@ public class Player extends Mob {
 			this.carryWeight=cw;
 			this.armorEquipped=null;
 			setX(0);setY(0);
+			playermove=new PlayerMover();
 			//ImageIcon ii= new ImageIcon(this.getClass().getResource("/ppl/IMC/idle/crusader_idle_00000.png"));
 			try {
-				stand = ImageIO.read(this.getClass().getResourceAsStream("/ppl/IMC/idle/crusader_idle_00000.png"));
+				stand = (BufferedImage) ImageIO.read(this.getClass().getResourceAsStream("/ppl/IMC/idle/crusader_idle_00000.png"));
 				//ImageIO.write(stand.getSubimage(65, 20, 170, 170), "png", new File("./resources/ppl/IMC/idle/crusader_idle_00000.png"));
 				initwalk();
 				pic=stand;
-				t1=new Timer(20, new PlayerMover());
+				t1=new Timer(20, playermove);
 				//ImageIO.write(pic, "png", new File("./pic1.png"));
 			} catch (IOException e) {
 				System.out.println("HELP1");
@@ -70,7 +71,7 @@ public class Player extends Mob {
 			try {
 			for(int j=0;j<4;j++) {
 				for(int i=0;i<10;i++) {
-					walks[j][i]=ImageIO.read(this.getClass().getResourceAsStream("../ppl/IMC/walk/crusader_walk_"+j*2+"000"+i+".png"));//(new ImageIcon(this.getClass().getResource("/ppl/IMC/walk/crusader_walk_"+j*2+"000"+i+".png"))).getImage();
+					walks[j][i]=(BufferedImage) ImageIO.read(this.getClass().getResourceAsStream("../ppl/IMC/walk/crusader_walk_"+j*2+"000"+i+".png"));//(new ImageIcon(this.getClass().getResource("/ppl/IMC/walk/crusader_walk_"+j*2+"000"+i+".png"))).getImage();
 //					BufferedImage temp = new BufferedImage(32, 32, BufferedImage.TYPE_4BYTE_ABGR_PRE);
 //					Graphics2D g =temp.createGraphics();
 //					g.drawImage(walks[j][i], 0, 0, 32, 32, null);
@@ -78,7 +79,7 @@ public class Player extends Mob {
 				}
 				for(int i=10;i<15;i++) {
 					
-						walks[j][i]=ImageIO.read(this.getClass().getResourceAsStream("../ppl/IMC/walk/crusader_walk_"+j*2+"00"+i+".png"));
+						walks[j][i]=(BufferedImage) ImageIO.read(this.getClass().getResourceAsStream("../ppl/IMC/walk/crusader_walk_"+j*2+"00"+i+".png"));
 //						BufferedImage temp = new BufferedImage(32, 32, BufferedImage.TYPE_4BYTE_ABGR_PRE);
 //						Graphics2D g =temp.createGraphics();
 //						g.drawImage(walks[j][i], 0, 0, 32, 32, null);
@@ -314,5 +315,62 @@ public class Player extends Mob {
 			}
 			
 		}
-		
+		private void writeObject(ObjectOutputStream out) throws IOException {
+		    out.defaultWriteObject();
+		    for(int i=0; i<4;i++) {
+			    out.writeInt(walks[i].length); // how many images are serialized?
+	
+			    for (BufferedImage eachImage : walks[i]) {
+			        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+			        ImageIO.write(eachImage, "png", buffer);
+	
+			        out.writeInt(buffer.size()); // Prepend image with byte count
+			        buffer.writeTo(out);         // Write image
+			    }
+		    }
+		    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+	        ImageIO.write(stand, "png", buffer);
+
+	        out.writeInt(buffer.size()); // Prepend image with byte count
+	        buffer.writeTo(out);         // Write image
+	        buffer = new ByteArrayOutputStream();
+	        ImageIO.write(pic, "png", buffer);
+	    	
+	        out.writeInt(buffer.size()); // Prepend image with byte count
+	        buffer.writeTo(out);         // Write image
+		}
+
+		private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		    in.defaultReadObject();
+		    walks=new BufferedImage[4][];
+		    for(int j=0;j<4;j++) {
+		    int imageCount = in.readInt();
+			    walks[j] = new BufferedImage[imageCount];
+			    for (int i = 0; i < imageCount; i++) {
+			        int size = in.readInt(); // Read byte count
+	
+			        byte[] buffer = new byte[size];
+			        in.readFully(buffer); // Make sure you read all bytes of the image
+	
+			        walks[j][i]=(ImageIO.read(new ByteArrayInputStream(buffer)));
+			    }
+		    }
+		    int size = in.readInt(); // Read byte count
+			
+	        byte[] buffer = new byte[size];
+	        in.readFully(buffer); // Make sure you read all bytes of the image
+
+	        stand=(ImageIO.read(new ByteArrayInputStream(buffer)));
+	        size = in.readInt(); // Read byte count
+	    	
+	        buffer = new byte[size];
+	        in.readFully(buffer); // Make sure you read all bytes of the image
+
+	        pic=(ImageIO.read(new ByteArrayInputStream(buffer)));
+		}
+		public void callAfterLoad(PlayScreen ps) {
+			this.ps=ps;
+			playermove= new PlayerMover();
+			t1.addActionListener(playermove);
+		}
 }

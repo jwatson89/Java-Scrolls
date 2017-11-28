@@ -13,7 +13,12 @@ public class MainMenu extends JFrame {
 	private JButton play, load, options;
 	private ButtonListener listener;
 	private OptionsMenu opt;
+	private PlayScreen ps;
+	private PauseMenu pauseMenu;
 	public MainMenu() {
+		ps = new PlayScreen();
+		pauseMenu = new PauseMenu(ps,this);
+		ps.linkPauseMenu(pauseMenu);
 		opt=new OptionsMenu();
 		ImageIcon ii =new ImageIcon(this.getClass().getResource("../Skyrimmap.png"));
 		background = new BackgroundPanel(ii.getImage());
@@ -60,13 +65,20 @@ public class MainMenu extends JFrame {
 		{
 			JButton source=(JButton)e.getSource();
 			if(source.equals(play)) {
-				setContentPane(new PlayScreen());
+				setContentPane(ps);
 				validate();
-				getContentPane().requestFocus();
+				ps.setFocusable(true);
+				ps.requestFocus();
 				//System.out.println("PLAY");
 			}
 			else if (source.equals(load)) {
-				
+				PlayScreen pstmp;
+				pstmp= PlayScreen.load();
+				if(pstmp!=null) {
+					ps =pstmp;
+					ps.linkPauseMenu(pauseMenu);
+					pauseMenu.setPlayScreen(ps);
+				}
 			}
 			else if(source.equals(options)) {
 				setContentPane(opt);
@@ -80,5 +92,11 @@ public class MainMenu extends JFrame {
 	}
 	public static void main(String[] args) {
 		MainMenu m = new MainMenu();
+	}
+
+	public void setPlayScreen(PlayScreen ps) {
+		this.ps=ps;		
+		this.setContentPane(ps);
+		ps.linkPauseMenu(pauseMenu);
 	}
 }

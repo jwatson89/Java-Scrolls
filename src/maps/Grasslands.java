@@ -2,21 +2,21 @@ package maps;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.io.*;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
-
+import gui.*;
 import mobs.Mob;
 
-public class Grasslands extends Map {
+public class Grasslands extends Map implements Serializable{
 	Random rand;
 	public Grasslands(int dificulty) {// 1-5
 		super();
 
 		 rand = new Random();
 		try {
-			this.setBG(ImageIO.read(this.getClass().getResourceAsStream("../rpgTown/tileset/grass-tile-big.png")));
+			this.setBG((BufferedImage)ImageIO.read(this.getClass().getResourceAsStream("../rpgTown/tileset/grass-tile-big.png")));
 //			BufferedImage tmp=new BufferedImage(1920,960, BufferedImage.TYPE_INT_RGB);
 //			Graphics2D g2 = tmp.createGraphics();
 //			for(int i=0;i<20;i++) {
@@ -37,7 +37,7 @@ public class Grasslands extends Map {
 		// use the tile.setItem() for objects (weapons, armor, etc..) that you can walk on and interact with.
 		BufferedImage full = null;
 		try {
-			 full = ImageIO.read(this.getClass().getResourceAsStream("../rpgmakerAssets/tf_jungle_tileset.png"));
+			 full = (BufferedImage) ImageIO.read(this.getClass().getResourceAsStream("../rpgmakerAssets/tf_jungle_tileset.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -75,11 +75,11 @@ public class Grasslands extends Map {
 		int  x = rand.nextInt(58)+1;
 		int  y = rand.nextInt(28)+1;
 		double sqrt = Math.sqrt(clusterSize);
-		if(x > 58-width*sqrt) { 
-			x-= (int)(width*sqrt);
+		if(x > 58-(width+sqrt)) { 
+			x= (int)(59-(width+sqrt));
 		}
-		if(y > 28-width*sqrt) {
-			y-= (int)(height*sqrt);
+		if(y > 29-(height+sqrt)) {
+			y= (int)(29-(height+sqrt));
 		}
 		for(int i=0;i<sqrt;i++) {
 			for(int j=0;j<sqrt;j++) {

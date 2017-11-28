@@ -3,26 +3,30 @@ package maps;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.*;
 import java.util.ArrayList;
 
-import gui.PlayScreen;
+import javax.imageio.ImageIO;
+
+import gui.*;
 import mobs.*;
 
-public class Map {
+public class Map implements Serializable{
 	private static int tilesH=30, tilesW=60;
-		private BufferedImage background;
+		transient private BufferedImage background;
 		//private soundtrack bgMusic;
-		private ArrayList<Monster> monsters; // do we even need these?
-		private ArrayList<People> people;
+		//private ArrayList<Monster> monsters; // do we even need these?
+		//private ArrayList<People> people;
 		private Tile[][] grid;
-		public void setBG(BufferedImage bg) {
-			background=bg;
+		public void setBG(BufferedImage bufferedImage) {
+			background=bufferedImage;
 		}
 		public Map() {
 			//this.bgMusic = null;
 			this.background = null;
-			this.monsters  = new ArrayList<Monster>();
-			this.people = new ArrayList<People>();
+			//this.monsters  = new ArrayList<Monster>();
+			//this.people = new ArrayList<People>();
 			this.grid = new Tile[tilesH][tilesW];
 			tileInit();
 		}
@@ -53,5 +57,27 @@ public class Map {
 		public Tile getTile(int x, int y) {return this.grid[y][x];}
 		public int getTileSize() {
 			return grid[0][0].getHeight();
+		}
+		private void writeObject(ObjectOutputStream out) throws IOException {
+		    out.defaultWriteObject();
+		    
+		        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		        ImageIO.write((RenderedImage) background, "png", buffer);
+
+		        out.writeInt(buffer.size()); // Prepend image with byte count
+		        buffer.writeTo(out);         // Write image
+		}
+
+		private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		    in.defaultReadObject();
+
+		    
+		        int size = in.readInt(); // Read byte count
+
+		        byte[] buffer = new byte[size];
+		        in.readFully(buffer); // Make sure you read all bytes of the image
+
+		       background=(ImageIO.read(new ByteArrayInputStream(buffer)));
+		    
 		}
 }

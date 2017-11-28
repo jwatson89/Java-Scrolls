@@ -1,12 +1,16 @@
 package mobs;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import maps.*;
 
-public class Mob {
+public class Mob implements Serializable{
 		//private Icon pic;
 		private int health;
 		private int speed;
@@ -15,7 +19,7 @@ public class Mob {
 		private int locy;
 		private int attack;
 		protected int direction;
-		private Image mobImage;
+		transient private BufferedImage mobImage;
 		
 		
 		public Mob(int health, int speed, int armor, int locx, int locy, int attack) {
@@ -68,7 +72,11 @@ public class Mob {
 		}
 		public Image getImage() {return this.mobImage;}
 		public void setImage(String path) {
-			this.mobImage = (new ImageIcon(this.getClass().getResource(path)).getImage());
+			try {
+				this.mobImage = (ImageIO.read(this.getClass().getResourceAsStream(path)));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		public void attack(Map theMap) {
@@ -118,5 +126,27 @@ public class Mob {
 		public void move() {
 			// Fix Me maybe?
 		}
-		
+		private void writeObject(ObjectOutputStream out) throws IOException {
+		    out.defaultWriteObject();
+		    
+		        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		        if(mobImage!=null) {
+		          	ImageIO.write(mobImage, "png", buffer);
+		        }
+		        out.writeInt(buffer.size()); // Prepend image with byte count
+		        buffer.writeTo(out);         // Write image
+		}
+
+		private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		    in.defaultReadObject();
+
+		    
+		        int size = in.readInt(); // Read byte count
+		        if(size != 0) {
+			        byte[] buffer = new byte[size];
+			        in.readFully(buffer); // Make sure you read all bytes of the image
+	
+			        mobImage=(ImageIO.read(new ByteArrayInputStream(buffer)));
+		        }
+		}
 }

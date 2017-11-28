@@ -1,11 +1,19 @@
 package items;
 
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-public abstract class Item {
-		private ImageIcon pic;
+public abstract class Item implements Serializable{
+		private BufferedImage pic;
 		private String name;
 		private int weight;
 		private int value;
@@ -19,10 +27,10 @@ public abstract class Item {
 		public Item() {
 			this("",0,0);
 		}
-		public ImageIcon getPic() {
+		public BufferedImage getPic() {
 			return pic;
 		}
-		public void setPic(ImageIcon pic) {
+		public void setPic(BufferedImage pic) {
 			this.pic = pic;
 		}
 		public String getName() {
@@ -42,5 +50,28 @@ public abstract class Item {
 		}
 		public void setValue(int value) {
 			this.value = value;
+		}
+		private void writeObject(ObjectOutputStream out) throws IOException {
+		    out.defaultWriteObject();
+		    	
+		        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+		        if(pic!=null) {
+		        	ImageIO.write(pic, "png", buffer);
+		        }
+		        out.writeInt(buffer.size()); // Prepend image with byte count
+		        buffer.writeTo(out);         // Write image
+		    
+		}
+
+		private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		    in.defaultReadObject();
+		        int size = in.readInt(); // Read byte count
+		        if(size!=0) {
+			        byte[] buffer = new byte[size];
+			        
+			        in.readFully(buffer); // Make sure you read all bytes of the image
+		
+			        setPic(ImageIO.read(new ByteArrayInputStream(buffer)));
+		        }
 		}
 }
