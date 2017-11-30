@@ -17,6 +17,7 @@ public class MainMenu extends JFrame {
 	private PauseMenu pauseMenu;
 	private JPanel playContainer;
 	private StatBar statBar;
+	private InventoryDisplay invDisp;
 	public MainMenu() {
 		ps = new PlayScreen();
 		playContainer = new JPanel();
@@ -30,6 +31,7 @@ public class MainMenu extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		playContainer.setLayout(new BorderLayout());
 		statBar = new StatBar(ps.getPlayer());
+		invDisp = new InventoryDisplay(ps.getPlayer());
 		buildGUI();	
 	}
 				
@@ -37,6 +39,7 @@ public class MainMenu extends JFrame {
 	{
 		playContainer.add(ps,BorderLayout.CENTER);
 		playContainer.add(statBar,BorderLayout.NORTH);
+		playContainer.add(invDisp,BorderLayout.SOUTH);
 		listener = new ButtonListener();
      	play=new JButton("Play");
      	play.addActionListener(listener);
@@ -106,6 +109,7 @@ public class MainMenu extends JFrame {
 		this.ps=ps;		
 		playContainer.add(ps,BorderLayout.CENTER);
 		statBar.setPlayer(ps.getPlayer());
+		invDisp.setPlayer(ps.getPlayer());
 		ps.linkPauseMenu(pauseMenu);
 		playContainer.repaint();
 		//statBar.newTimer();

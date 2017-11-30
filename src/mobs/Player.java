@@ -26,6 +26,7 @@ public class Player extends Mob {
 		private int carryWeight;
 		private int exp,maxExp;
 		private Armor armorEquipped;
+		private Weapon weaponEquipped;
 		private ArrayList<Item> inventory;
 		transient private PlayerMover playermove;
 		private ArrayList<Integer> skills;
@@ -63,7 +64,30 @@ public class Player extends Mob {
 				System.out.println("HELP1");
 				e.printStackTrace();
 			}
-			
+			initInventory();
+		}
+		private void initInventory() {
+			Weapon w1 = new Weapon(5,"small hammer",2,10);
+			try {
+				w1.setPic(ImageIO.read(this.getClass().getResourceAsStream("../weapons/smallHammer.png")));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			this.addInventoryItem(w1);
+			Weapon w2 = new Weapon(10,"big hammer",4,20);
+			try {
+				w1.setPic(ImageIO.read(this.getClass().getResourceAsStream("../weapons/bigHammer.png")));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			this.addInventoryItem(w2);
+			Weapon w3 = new Weapon(7,"small sword",3,15);
+			try {
+				w1.setPic(ImageIO.read(this.getClass().getResourceAsStream("../weapons/sword.png")));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			this.addInventoryItem(w3);
 		}
 		public void initwalk() { //commented line were used for one time scaling
 			try {
@@ -119,6 +143,9 @@ public class Player extends Mob {
 		public void addInventoryItem(Item item) {
 			this.inventory.add(item);
 		}
+		public void setInventory(ArrayList<Item> inventory) {
+			this.inventory = inventory;
+		}
 		public void removeItem(Item item) {
 			inventory.remove(item);
 		}
@@ -150,7 +177,15 @@ public class Player extends Mob {
 			return armorEquipped;
 		}
 		public void setArmorEquipped(Armor armorEquipped) {
+			this.setArmor(armorEquipped.getArmor());
 			this.armorEquipped = armorEquipped;
+		}
+		public Item getWeaponEquipped() {
+			return weaponEquipped;
+		}
+		public void setWeaponEquipped(Weapon weaponEquipped) {
+			this.setAttack(weaponEquipped.getAttack());
+			this.weaponEquipped = weaponEquipped;
 		}
 		public void increaseStat(int x) {
 			stats.set(x, stats.get(x)+1);

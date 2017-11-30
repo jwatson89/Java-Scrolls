@@ -15,12 +15,11 @@ import maps.Grasslands;
 import maps.Map;
 import mobs.*;
 
-public class PlayScreen extends JPanel implements ActionListener, Serializable{
+public class PlayScreen extends JPanel implements Serializable{
 		private Player p1;
 		private Map m1;
 		transient private PauseMenu pauseMenu;
-		private JPanel inventory = new JPanel(); //new
-		private JLabel[] inventoryPics = new JLabel[10]; //new
+		
 		
 		public PlayScreen() {
 			init();
@@ -35,36 +34,29 @@ public class PlayScreen extends JPanel implements ActionListener, Serializable{
 	        setFocusable(true);
 	        setBackground(Color.WHITE);
 	        p1 = new Player(this);
-//	        Weapon smallHammer = new Weapon();
-//			ImageIcon smallHammerPic =new ImageIcon(this.getClass().getResource("/weapons/smallHammer.png"));
-//	        smallHammer.setPic(smallHammerPic);
-//	        p1.addInventoryItem(smallHammer);
-//	        
-//	        Weapon bigHammer = new Weapon();
-//			ImageIcon bigHammerPic =new ImageIcon(this.getClass().getResource("/weapons/bigHammer.png"));
-//	        bigHammer.setPic(bigHammerPic);
-//	        p1.addInventoryItem(bigHammer);
-//			
-	        if(p1.getInventory().size() == 0) {				
-	        	inventory.setLayout(new GridLayout(1,10,2,2));
-	        	/*for(int i = 0; i < 10; i++) {
-		        	inventoryPics[i] = blankPic;
-		        	inventory.add(inventoryPics[i]);
-		        }*/
-	        }
-	        else {
-	        	inventory.setLayout(new GridLayout(1, 10, 2, 2/*p1.getInventory().size()*/));
-	        	for(int i = 0; i < p1.getInventory().size(); i++) {  
-	        		//inventoryPics[i] = new JLabel(p1.getInventory().get(i).getPic());
-	        		inventory.add(inventoryPics[i]);
-		        }
-	        }
+//	        new Weapon();
+//	        if(p1.getInventory().size() == 0) {				
+//	        	inventory.setLayout(new GridLayout(1,10,2,2));
+//	        	/*for(int i = 0; i < 10; i++) {
+//		        	inventoryPics[i] = blankPic;
+//		        	inventory.add(inventoryPics[i]);
+//		        }*/
+//	        }
+//	        else {
+//	        	inventory.setLayout(new GridLayout(1, 10, 2, 2/*p1.getInventory().size()*/));
+//	        	for(int i = 0; i < p1.getInventory().size(); i++) {  
+//	        		JButton newButton = new JButton(p1.getInventory().get(i).getName() , p1.getInventory().get(i).getPic());
+//	        		newButton.setBackground(Color.GRAY);
+//	        		inventoryPics[i] = newButton;
+//	        		inventory.add(inventoryPics[i]);
+//		        }
+//	        }
 	       
 	        //this.add(statBar,BorderLayout.NORTH);
-	        setLayout(new BorderLayout());
-	        inventory.setPreferredSize(new Dimension(400, 120));
-	        inventory.setBackground(Color.DARK_GRAY);
-			this.add(inventory, BorderLayout.SOUTH);			
+//	        setLayout(new BorderLayout());
+//	        inventory.setPreferredSize(new Dimension(400, 120));
+//	        inventory.setBackground(Color.DARK_GRAY);
+//			this.add(inventory, BorderLayout.SOUTH);			
 	        m1=new Grasslands(5);
 	        //p1.scale(m1.getTileSize(),m1.getTileSize());
 	        p1.setSpeed(3);
@@ -96,12 +88,9 @@ public class PlayScreen extends JPanel implements ActionListener, Serializable{
 			
 		}
 
-		   @Override
-		    public void actionPerformed(ActionEvent e) {
-//		        p1.move();
-//		        p1.boundsCheck(getWidth(),getHeight());
-//		        repaint();  
-		    }
+		   
+			   
+		    
 
 		    private class TAdapter extends KeyAdapter {
 		    	
