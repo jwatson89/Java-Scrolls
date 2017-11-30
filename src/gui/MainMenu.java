@@ -15,8 +15,11 @@ public class MainMenu extends JFrame {
 	private OptionsMenu opt;
 	private PlayScreen ps;
 	private PauseMenu pauseMenu;
+	private JPanel playContainer;
+	private StatBar statBar;
 	public MainMenu() {
 		ps = new PlayScreen();
+		playContainer = new JPanel();
 		pauseMenu = new PauseMenu(ps,this);
 		ps.linkPauseMenu(pauseMenu);
 		opt=new OptionsMenu();
@@ -25,11 +28,15 @@ public class MainMenu extends JFrame {
 		background.setLayout(new BorderLayout());
 		setContentPane(background);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		playContainer.setLayout(new BorderLayout());
+		statBar = new StatBar(ps.getPlayer());
 		buildGUI();	
 	}
 				
 	public void buildGUI() 
 	{
+		playContainer.add(ps,BorderLayout.CENTER);
+		playContainer.add(statBar,BorderLayout.NORTH);
 		listener = new ButtonListener();
      	play=new JButton("Play");
      	play.addActionListener(listener);
@@ -55,7 +62,6 @@ public class MainMenu extends JFrame {
      	background.add(tmp3,BorderLayout.NORTH);
      	background.add(new JPanel(),BorderLayout.WEST);
      	background.add(new JPanel(),BorderLayout.SOUTH);
-     	
      	setSize(1920,1080);
 		setVisible(true);
 	}
@@ -63,9 +69,10 @@ public class MainMenu extends JFrame {
 	{
 		public void actionPerformed(ActionEvent e) 
 		{
+			
 			JButton source=(JButton)e.getSource();
 			if(source.equals(play)) {
-				setContentPane(ps);
+				setContentPane(playContainer);
 				validate();
 				ps.setFocusable(true);
 				ps.requestFocus();
@@ -94,9 +101,13 @@ public class MainMenu extends JFrame {
 		MainMenu m = new MainMenu();
 	}
 
-	public void setPlayScreen(PlayScreen ps) {
+	public void setPlayScreen(PlayScreen ps) { // aka onLoad
+		playContainer.remove(this.ps);
 		this.ps=ps;		
-		this.setContentPane(ps);
+		playContainer.add(ps,BorderLayout.CENTER);
+		statBar.setPlayer(ps.getPlayer());
 		ps.linkPauseMenu(pauseMenu);
+		playContainer.repaint();
+		//statBar.newTimer();
 	}
 }

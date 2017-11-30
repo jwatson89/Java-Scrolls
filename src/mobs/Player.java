@@ -24,17 +24,16 @@ public class Player extends Mob {
 		private int x,y,dx,dy,n,width,height;
 		private String name;
 		private int carryWeight;
-		private int exp;
+		private int exp,maxExp;
 		private Armor armorEquipped;
 		private ArrayList<Item> inventory;
-		private int gold;
 		transient private PlayerMover playermove;
 		private ArrayList<Integer> skills;
 		private ArrayList<Integer> stats;
 		public boolean moving;
 		public Player(PlayScreen ps) {
 			this();
-			this.ps=ps;
+			callAfterLoad(ps);
 		}
 		public Player() {
 			this(25,0,1,0,0,5,"me",0,0,0);
@@ -45,21 +44,20 @@ public class Player extends Mob {
 			walks=new BufferedImage[4][15];
 			this.name = name;
 			this.exp = exp;
+			maxExp=exp;
 			this.inventory = new ArrayList<Item>();
-			this.gold = gold;
+			this.setGold(gold);
 			this.skills = new ArrayList<Integer>();
 			this.stats = new ArrayList<Integer>();
 			this.carryWeight=cw;
 			this.armorEquipped=null;
 			setX(0);setY(0);
-			playermove=new PlayerMover();
 			//ImageIcon ii= new ImageIcon(this.getClass().getResource("/ppl/IMC/idle/crusader_idle_00000.png"));
 			try {
 				stand = (BufferedImage) ImageIO.read(this.getClass().getResourceAsStream("/ppl/IMC/idle/crusader_idle_00000.png"));
 				//ImageIO.write(stand.getSubimage(65, 20, 170, 170), "png", new File("./resources/ppl/IMC/idle/crusader_idle_00000.png"));
 				initwalk();
 				pic=stand;
-				t1=new Timer(20, playermove);
 				//ImageIO.write(pic, "png", new File("./pic1.png"));
 			} catch (IOException e) {
 				System.out.println("HELP1");
@@ -124,12 +122,6 @@ public class Player extends Mob {
 		public void removeItem(Item item) {
 			inventory.remove(item);
 		}
-		public int getGold() {
-			return gold;
-		}
-		public void setGold(int gold) {
-			this.gold = gold;
-		}
 		public void increaseSkill(int x) {
 			skills.set(x, skills.get(x)+1);
 		}
@@ -137,7 +129,16 @@ public class Player extends Mob {
 			return skills.get(x);
 		}
 		public void levelUp() {
-			//FIXME
+			setMaxHealth(getMaxHealth()+10);
+			setHealth(getMaxHealth());
+			setExp(0);
+			setMaxExp(getMaxExp()+15);
+		}
+		private void setMaxExp(int i) {
+			maxExp=i;
+		}
+		public int getMaxExp() {
+			return maxExp;
 		}
 		public int getCarryWeight() {
 			return carryWeight;
@@ -339,7 +340,6 @@ public class Player extends Mob {
 	        out.writeInt(buffer.size()); // Prepend image with byte count
 	        buffer.writeTo(out);         // Write image
 		}
-
 		private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		    in.defaultReadObject();
 		    walks=new BufferedImage[4][];
@@ -371,6 +371,6 @@ public class Player extends Mob {
 		public void callAfterLoad(PlayScreen ps) {
 			this.ps=ps;
 			playermove= new PlayerMover();
-			t1.addActionListener(playermove);
+			t1=new Timer(10, playermove);
 		}
 }

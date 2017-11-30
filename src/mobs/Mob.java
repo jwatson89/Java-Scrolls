@@ -12,9 +12,10 @@ import maps.*;
 
 public class Mob implements Serializable{
 		//private Icon pic;
-		private int health;
+		private int health,maxHealth;
 		private int speed;
 		private int armor;
+		private int gold;
 		private int locx;
 		private int locy;
 		private int attack;
@@ -29,6 +30,8 @@ public class Mob implements Serializable{
 			this.locx = locx;
 			this.locy = locy;
 			this.attack = attack;
+			maxHealth=health;
+			gold=0;
 			this.direction = 3;
 		}
 		public Mob() {
@@ -78,6 +81,15 @@ public class Mob implements Serializable{
 				e.printStackTrace();
 			}
 		}
+		public void addGold(int g) {
+			gold+=g;
+		}
+		public int getGold() {
+			return gold;
+		}
+		public void setGold(int gold) {
+			this.gold = gold;
+		}
 		
 		public void attack(Map theMap) {
 			Tile attackTile = null;
@@ -114,9 +126,13 @@ public class Mob implements Serializable{
 				else{
 					attackTile.setMob(null);
 					attackTile.setWalkable(true);
+					if(this.getClass().getName().equals("mobs.Player")) {
+						this.addGold(defender.getGold());
+					}
 				}
 			}
 		}
+		
 		
 		
 		private void counterAttack(Mob mob) {
@@ -148,5 +164,11 @@ public class Mob implements Serializable{
 	
 			        mobImage=(ImageIO.read(new ByteArrayInputStream(buffer)));
 		        }
+		}
+		public int getMaxHealth() {
+			return maxHealth;
+		}
+		public void setMaxHealth(int maxHealth) {
+			this.maxHealth = maxHealth;
 		}
 }

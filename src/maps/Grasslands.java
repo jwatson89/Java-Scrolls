@@ -111,6 +111,7 @@ public class Grasslands extends Map implements Serializable{
 			m.setAttack(2);
 			m.setLocx(x);
 			m.setLocy(y);
+			m.setGold(5);
 			break;
 		case 1:
 			// easy mob

@@ -30,7 +30,10 @@ public class PauseMenu extends JFrame {
 		add(resume);
 		add(save);
 		add(load);
+		setAlwaysOnTop(true);
 		setSize(600,100);
+		this.setResizable(false);
+		this.setMenuBar(null);
 		
 	}
 	

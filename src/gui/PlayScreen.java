@@ -19,8 +19,8 @@ public class PlayScreen extends JPanel implements ActionListener, Serializable{
 		private Player p1;
 		private Map m1;
 		transient private PauseMenu pauseMenu;
-		JPanel inventory = new JPanel(); //new
-		JLabel[] inventoryPics = new JLabel[10]; //new
+		private JPanel inventory = new JPanel(); //new
+		private JLabel[] inventoryPics = new JLabel[10]; //new
 		
 		public PlayScreen() {
 			init();
@@ -59,7 +59,8 @@ public class PlayScreen extends JPanel implements ActionListener, Serializable{
 	        		inventory.add(inventoryPics[i]);
 		        }
 	        }
-	        
+	       
+	        //this.add(statBar,BorderLayout.NORTH);
 	        setLayout(new BorderLayout());
 	        inventory.setPreferredSize(new Dimension(400, 120));
 	        inventory.setBackground(Color.DARK_GRAY);
@@ -83,9 +84,10 @@ public class PlayScreen extends JPanel implements ActionListener, Serializable{
 	        super.paintComponent(g);
 	        m1.draw(g, this);
 	        doDrawing(g);
-
+	        //statBar.repaint();
 	        Toolkit.getDefaultToolkit().sync();
 	    }
+		
 		
 		private void doDrawing(Graphics g) {
 			Graphics2D g2d = (Graphics2D) g;
@@ -106,6 +108,7 @@ public class PlayScreen extends JPanel implements ActionListener, Serializable{
 		        @Override
 
 		        public void keyPressed(KeyEvent e) {
+		        	
 		            int key = e.getKeyCode();
 		        	if(key == KeyEvent.VK_ESCAPE) {
 		        		pauseMenu.pause();
@@ -151,7 +154,7 @@ public class PlayScreen extends JPanel implements ActionListener, Serializable{
 		        }
 		    }
 
-			public static void save(PlayScreen ps) { //FIXME this doesnt work
+			public static void save(PlayScreen ps) { 
 				try {
 					FileOutputStream fout=new FileOutputStream("save1.sv");
 					ObjectOutputStream out=new ObjectOutputStream(fout);
@@ -185,5 +188,8 @@ public class PlayScreen extends JPanel implements ActionListener, Serializable{
 			}
 			public void setMap(Map m) {
 				this.m1=m;
+			}
+			public Player getPlayer() {
+				return p1;
 			}
 }
