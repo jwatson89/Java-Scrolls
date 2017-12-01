@@ -76,14 +76,14 @@ public class Player extends Mob {
 			this.addInventoryItem(w1);
 			Weapon w2 = new Weapon(10,"big hammer",4,20);
 			try {
-				w1.setPic(ImageIO.read(this.getClass().getResourceAsStream("../weapons/bigHammer.png")));
+				w2.setPic(ImageIO.read(this.getClass().getResourceAsStream("../weapons/bigHammer.png")));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			this.addInventoryItem(w2);
 			Weapon w3 = new Weapon(7,"small sword",3,15);
 			try {
-				w1.setPic(ImageIO.read(this.getClass().getResourceAsStream("../weapons/sword.png")));
+				w3.setPic(ImageIO.read(this.getClass().getResourceAsStream("../weapons/sword.png")));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

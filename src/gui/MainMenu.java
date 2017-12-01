@@ -18,7 +18,7 @@ public class MainMenu extends JFrame {
 	private JPanel playContainer;
 	private StatBar statBar;
 	private InventoryDisplay invDisp;
-	public MainMenu() {
+	public MainMenu(){
 		ps = new PlayScreen();
 		playContainer = new JPanel();
 		pauseMenu = new PauseMenu(ps,this);
@@ -32,11 +32,10 @@ public class MainMenu extends JFrame {
 		playContainer.setLayout(new BorderLayout());
 		statBar = new StatBar(ps.getPlayer());
 		invDisp = new InventoryDisplay(ps.getPlayer());
+		invDisp.setPreferredSize(new Dimension(ps.getWidth(),120));
 		buildGUI();	
 	}
-				
-	public void buildGUI() 
-	{
+	public void buildGUI(){
 		playContainer.add(ps,BorderLayout.CENTER);
 		playContainer.add(statBar,BorderLayout.NORTH);
 		playContainer.add(invDisp,BorderLayout.SOUTH);
@@ -103,7 +102,6 @@ public class MainMenu extends JFrame {
 	public static void main(String[] args) {
 		MainMenu m = new MainMenu();
 	}
-
 	public void setPlayScreen(PlayScreen ps) { // aka onLoad
 		playContainer.remove(this.ps);
 		this.ps=ps;		

@@ -34,29 +34,7 @@ public class PlayScreen extends JPanel implements Serializable{
 	        setFocusable(true);
 	        setBackground(Color.WHITE);
 	        p1 = new Player(this);
-//	        new Weapon();
-//	        if(p1.getInventory().size() == 0) {				
-//	        	inventory.setLayout(new GridLayout(1,10,2,2));
-//	        	/*for(int i = 0; i < 10; i++) {
-//		        	inventoryPics[i] = blankPic;
-//		        	inventory.add(inventoryPics[i]);
-//		        }*/
-//	        }
-//	        else {
-//	        	inventory.setLayout(new GridLayout(1, 10, 2, 2/*p1.getInventory().size()*/));
-//	        	for(int i = 0; i < p1.getInventory().size(); i++) {  
-//	        		JButton newButton = new JButton(p1.getInventory().get(i).getName() , p1.getInventory().get(i).getPic());
-//	        		newButton.setBackground(Color.GRAY);
-//	        		inventoryPics[i] = newButton;
-//	        		inventory.add(inventoryPics[i]);
-//		        }
-//	        }
-	       
-	        //this.add(statBar,BorderLayout.NORTH);
-//	        setLayout(new BorderLayout());
-//	        inventory.setPreferredSize(new Dimension(400, 120));
-//	        inventory.setBackground(Color.DARK_GRAY);
-//			this.add(inventory, BorderLayout.SOUTH);			
+		
 	        m1=new Grasslands(5);
 	        //p1.scale(m1.getTileSize(),m1.getTileSize());
 	        p1.setSpeed(3);
@@ -87,16 +65,18 @@ public class PlayScreen extends JPanel implements Serializable{
 		    
 			
 		}
-
-		   
-			   
-		    
+ 
 
 		    private class TAdapter extends KeyAdapter {
-		    	
+		    	@Override
+		    	public void keyTyped(KeyEvent e) {
+		    		if(e.getKeyChar()=='a') {
+		            	p1.attack(m1);
+		            	repaint();
+		            }
+		    	}
 		        @Override
-
-		        public void keyPressed(KeyEvent e) {
+ 		        public void keyPressed(KeyEvent e) {
 		        	
 		            int key = e.getKeyCode();
 		        	if(key == KeyEvent.VK_ESCAPE) {
@@ -135,10 +115,6 @@ public class PlayScreen extends JPanel implements Serializable{
 			                //p1.setY(p1.getY()+20);
 			            }
 			            
-			            if(key == KeyEvent.VK_A) {
-			            	p1.attack(m1);
-			            	repaint();
-			            }
 			        }
 		        }
 		    }
